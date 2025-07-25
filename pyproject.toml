@@ -28,6 +28,8 @@ robotpy_extras = [
 
 # Other pip packages to install
 requires = [
-    "phoenix6~=25.4",
+    "robotpy-commands-v2",
     "pynetworktables",
+    "phoenix6",
+    "robotpy-rev",
 ]

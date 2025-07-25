@@ -4,7 +4,7 @@
 * pip install phoenix6
 * pip install pynetworktables
 * pip install robotpy-pathplannerlib
-* pip install wpilib # is this included in robotpy
+* pip install robotpy-rev
 
 # Python Commands
 * py -3 -m robotpy deploy
