@@ -15,3 +15,7 @@ DASHBOARD_TITLES = {
     "ENCODED_MOTOR_POSITION": "Encoded Motor Position",
 }
 
+SWERVE_DEFAULT_NOT_GENERATED = {
+    "MAX_ROTATION_SPEED": 0.75, # radians per second
+    "MAX_POV_SPEED": 0.2, # percent
+}
