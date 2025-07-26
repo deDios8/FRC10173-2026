@@ -7,7 +7,7 @@ from generated.tuner_constants import TunerConstants
 from telemetry import Telemetry
 from pathplannerlib.auto import AutoBuilder
 from phoenix6 import swerve
-from wpilib import DriverStation, SmartDashboard
+from wpilib import DriverStation, SmartDashboard, Timer
 from wpimath.geometry import Rotation2d
 from wpimath.units import rotationsToRadians
 from subsystems.SS_GeneralMotor import SS_GeneralMotor
@@ -18,14 +18,14 @@ from subsystems.SS_EncodedMotor import SS_EncodedMotor
 
 class RobotContainer:
     def __init__(self) -> None:
-        self._logger = Telemetry(self._max_speed)
+        self._joystick = CommandXboxController(0)
+        self.initialize_subsystems()
+        # self.setup_swerve_drivetrain()
+        # self.swerve_bindings()
+        self.controller_bindings()
+
         self._auto_chooser = AutoBuilder.buildAutoChooser("Tests")
         SmartDashboard.putData("Auto Mode", self._auto_chooser)
-
-        self._joystick = CommandXboxController(0)
-        self.setup_swerve_drivetrain()
-        self.swerve_bindings()
-        self.controller_bindings()
 
     def initialize_subsystems(self):
         self.controller = commands2.button.CommandXboxController(0)
@@ -34,18 +34,18 @@ class RobotContainer:
         self.ss_encoded_motor = SS_EncodedMotor()
 
     def controller_bindings(self) -> None:
-        self.controller.x().whileTrue(self.ss_general_motor.run_forward_command2())
-        self.controller.a().onFalse(self.ss_general_servo.run_to_min_position_command())
-        self.controller.b().onFalse(self.ss_general_servo.run_to_max_position_command())
-        self.controller.y().onFalse(self.ss_general_servo.run_to_A_position_command())
+        self._joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())
+        self._joystick.a().onFalse(self.ss_general_servo.run_to_min_position_command())
+        self._joystick.b().onFalse(self.ss_general_servo.run_to_max_position_command())
+        self._joystick.y().onFalse(self.ss_general_servo.run_to_A_position_command())
         
-        self.controller.rightBumper().whileTrue(self.ss_general_servo.adjust_servo_ahead_command())
-        self.controller.leftBumper().whileTrue(self.ss_general_servo.adjust_servo_reverse_command())
+        self._joystick.rightBumper().whileTrue(self.ss_general_servo.adjust_servo_ahead_command())
+        self._joystick.leftBumper().whileTrue(self.ss_general_servo.adjust_servo_reverse_command())
 
-        self.controller.povUp().whileTrue(self.ss_encoded_motor.run_forward_command())
-        self.controller.povDown().onTrue(self.ss_encoded_motor.stop_motor_command())
-        self.controller.povLeft().onTrue(self.ss_encoded_motor.go_to_destination_A_command())
-        self.controller.povRight().onTrue(self.ss_encoded_motor.go_to_destination_B_command())
+        self._joystick.povUp().whileTrue(self.ss_encoded_motor.run_forward_command())
+        self._joystick.povDown().onTrue(self.ss_encoded_motor.stop_motor_command())
+        self._joystick.povLeft().onTrue(self.ss_encoded_motor.go_to_destination_A_command())
+        self._joystick.povRight().onTrue(self.ss_encoded_motor.go_to_destination_B_command())
 
 
     def swerve_bindings(self) -> None:
@@ -110,9 +110,11 @@ class RobotContainer:
             self.drivetrain.sys_id_quasistatic(SysIdRoutine.Direction.kReverse)
         )
 
+
     def setup_swerve_drivetrain(self) -> None:
-        self._max_speed = (TunerConstants.speed_at_12_volts)
         self._max_angular_rate = rotationsToRadians(0.75)
+        self._max_speed = (TunerConstants.speed_at_12_volts)
+        self._logger = Telemetry(self._max_speed)
 
         # Setting up bindings for necessary control of the swerve drive platform
         self._drive_field_centered = (
@@ -140,7 +142,8 @@ class MyRobot(commands2.TimedCommandRobot):
 
     def robotPeriodic(self) -> None: # Called every 20 ms
         # TODO commands2.CommandScheduler.getInstance().run()
-        pass
+        SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+
 
     def autonomousInit(self) -> None:
         self.autonomousCommand = self.container.getAutonomousCommand()
