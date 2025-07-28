@@ -5,23 +5,27 @@ import wpimath.units
 
 
 class SS_GeneralServo(commands2.Subsystem):
-    def __init__(self):
+    def __init__(self, pwm_channel, dashboard_position_text,
+                 pw_min=1000, pw_center=1500, pw_max=2000, deadband=8,
+                 pos_min=0.4, pos_max=0.6, pos_A=0.5):
         super().__init__()
-        self.servo = wpilib.Servo(constants.PWM_CHANNELS["GENERAL_SERVO"])
-        pulse_width_min = wpimath.units.microseconds(600)
-        pulse_width_center = wpimath.units.microseconds(1500)
-        pulse_width_max = wpimath.units.microseconds(2400)
+
+        self.servo = wpilib.Servo(pwm_channel)
+        self.dashboard_position_text = dashboard_position_text
+        pulse_width_min = wpimath.units.microseconds(pw_min)
+        pulse_width_center = wpimath.units.microseconds(pw_center)
+        pulse_width_max = wpimath.units.microseconds(pw_max)
         deadband = wpimath.units.microseconds(8)
         self.servo.setBounds(pulse_width_min, deadband, pulse_width_center, deadband, pulse_width_max)
         self.run_speed = 0.001
-        self.min_position = 0.4
-        self.max_position = 0.6
-        self.position_A = 0.5
+        self.min_position = pos_min
+        self.max_position = pos_max
+        self.position_A = pos_A
         self.set_destination(self.position_A)
 
     def periodic(self): # Special function called periodically by the robot
-        wpilib.SmartDashboard.putNumber(constants.DASHBOARD_TITLES["GENERAL_SERVO_POSITION"], self.position)
-
+        wpilib.SmartDashboard.putNumber(self.dashboard_position_text, self.position)
+        
 
     ## Methods
     def set_destination(self, destination):
