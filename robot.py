@@ -15,7 +15,7 @@ class RobotContainer:
     def __init__(self) -> None:
         self.joystick = CommandXboxController(0)
         self.initialize_subsystems()
-        # self.initialize_swerve_drive()
+        self.initialize_swerve_drive()
         self.controller_bindings()
 
 
@@ -35,23 +35,25 @@ class RobotContainer:
     def initialize_swerve_drive(self) -> None:
         self.ss_swerve_drive = SS_SwerveDrive(self.joystick)
         self._auto_chooser = AutoBuilder.buildAutoChooser(constants.SWERVE_DEFAULT_NOT_GENERATED["DEFAULT_AUTONOMOUS"])
-        SmartDashboard.putData(constants.SWERVE_DEFAULT_NOT_GENERATED["AUTONOMOUS_MODE"], self._auto_chooser)
+        SmartDashboard.putData(constants.SWERVE_DEFAULT_NOT_GENERATED["DEFAULT_AUTONOMOUS"], self._auto_chooser)
 
 
     def controller_bindings(self) -> None:
         # swerve drive bindings are contained in the SS_SwerveDrive class
         self.joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())
-        self.joystick.a().onFalse(self.ss_180_servo.run_to_min_position_command())
-        self.joystick.b().onFalse(self.ss_180_servo.run_to_max_position_command())
-        self.joystick.y().onFalse(self.ss_180_servo.run_to_A_position_command())
+        self.joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2())
+        # self.joystick.a().onFalse(self.ss_180_servo.run_to_min_position_command())
+        # self.joystick.b().onFalse(self.ss_180_servo.run_to_max_position_command())
+        # self.joystick.y().onFalse(self.ss_180_servo.run_to_A_position_command())
         
         self.joystick.rightBumper().whileTrue(self.ss_winch_servo.adjust_servo_ahead_command())
         self.joystick.leftBumper().whileTrue(self.ss_winch_servo.adjust_servo_reverse_command())
 
-        self.joystick.povUp().whileTrue(self.ss_encoded_motor.run_forward_command())
-        self.joystick.povDown().onTrue(self.ss_encoded_motor.stop_motor_command())
-        self.joystick.povLeft().onTrue(self.ss_encoded_motor.go_to_destination_A_command())
-        self.joystick.povRight().onTrue(self.ss_encoded_motor.go_to_destination_B_command())
+        # self.joystick.povUp().whileTrue(self.ss_encoded_motor.run_forward_command())
+        self.joystick.povUp().onTrue(self.ss_encoded_motor.go_to_destination_B_command())
+        self.joystick.povDown().onTrue(self.ss_encoded_motor.go_to_destination_A_command())
+        self.joystick.povLeft().onTrue(self.ss_encoded_motor.stop_motor_command())
+
 
 
     def getAutonomousCommand(self) -> commands2.Command:

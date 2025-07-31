@@ -13,9 +13,9 @@ class SS_EncodedMotor(commands2.Subsystem):
         self.encoder.setPosition(self.position)
         self.is_running = False
 
-        self.speed_cap = .1
+        self.speed_cap = 1
         self.destination_A = 10
-        self.destination_B = -10
+        self.destination_B = 40
 
 
     def periodic(self): # Special function called periodically by the robot

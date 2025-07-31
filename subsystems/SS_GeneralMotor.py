@@ -20,6 +20,10 @@ class SS_GeneralMotor(commands2.Subsystem):
         self.spark_motor.set(self.speed)
         self.is_running = True
 
+    def run_reverse(self):
+        self.spark_motor.set(-self.speed)
+        self.is_running = True
+
     def stop_motor(self):
         self.spark_motor.stopMotor()
         self.is_running = False
@@ -28,6 +32,9 @@ class SS_GeneralMotor(commands2.Subsystem):
     ## Commands
     def run_forward_command2(self):
         return commands2.cmd.startEnd(self.run_forward, self.stop_motor, self)
+
+    def run_reverse_command2(self):
+        return commands2.cmd.startEnd(self.run_reverse, self.stop_motor, self)
 
     def run_forward_command(self):
         return commands2.cmd.runOnce(self.run_forward, self)
