@@ -1,4 +1,3 @@
-import wpilib
 import constants
 import typing
 import commands2
@@ -11,14 +10,6 @@ from subsystems.SS_GeneralServo import SS_GeneralServo
 from subsystems.SS_EncodedMotor import SS_EncodedMotor
 from subsystems.SS_SwerveDrive import SS_SwerveDrive
 
-class MyRobot(wpilib.TimedRobot):
-    def robotInit(self):
-        RobotContainer()
-        self.joystick = wpilib.Joystick(1)  # Initialize joystick on port 1(engineer)
-        
-
-    def teleopPeriodic(self):
-        commands2.CommandScheduler.getInstance().run()
 
 class RobotContainer:
     def __init__(self) -> None:
@@ -27,7 +18,6 @@ class RobotContainer:
         self.initialize_swerve_drive()
         self.driver_controller_bindings()
         self.engineer_controller_bindings
-        RobotContainer()
 
 
     def initialize_subsystems(self) -> None:
@@ -52,8 +42,8 @@ class RobotContainer:
 
     def driver_controller_bindings(self) -> None:
         # swerve drive bindings are contained in the SS_SwerveDrive class
-        #self.driver_joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())#not anymore
-        #self.driver_joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2()) #not anymore
+        self.driver_joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())#not anymore
+        self.driver_joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2()) #not anymore
         # self.driver_joystick.a().onFalse(self.ss_180_servo.run_to_min_position_command())
         # self.driver_joystick.b().onFalse(self.ss_180_servo.run_to_max_position_command())
         # self.driver_joystick.y().onFalse(self.ss_180_servo.run_to_A_position_command())
