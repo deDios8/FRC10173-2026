@@ -13,7 +13,7 @@ from subsystems.SS_SwerveDrive import SS_SwerveDrive
 
 class RobotContainer:
     def __init__(self) -> None:
-        self.joystick = CommandXboxController(0)
+        # self.joystick = CommandXboxController(0)
         self.initialize_subsystems()
         self.initialize_swerve_drive()
         self.controller_bindings()
