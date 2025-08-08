@@ -42,8 +42,8 @@ class RobotContainer:
 
     def driver_controller_bindings(self) -> None:
         # swerve drive bindings are contained in the SS_SwerveDrive class
-        self.driver_joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())#not anymore
-        self.driver_joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2()) #not anymore
+        #self.driver_joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())#not anymore
+        #self.driver_joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2()) #not anymore
         # self.driver_joystick.a().onFalse(self.ss_180_servo.run_to_min_position_command())
         # self.driver_joystick.b().onFalse(self.ss_180_servo.run_to_max_position_command())
         # self.driver_joystick.y().onFalse(self.ss_180_servo.run_to_A_position_command())
