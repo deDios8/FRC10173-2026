@@ -16,12 +16,13 @@ class RobotContainer:
         # self.driver_joystick = CommandXboxController(0)
         self.initialize_subsystems()
         self.initialize_swerve_drive()
-        self.controller_bindings()
+        self.driver_controller_bindings()
+        #self.engineer_controller_bindings
 
 
     def initialize_subsystems(self) -> None:
         self.driver_joystick = commands2.button.CommandXboxController(0)
-        self.engineer_joystick = commands2.button.CommandXboxController(1)
+        #self.engineer_joystick = commands2.button.CommandXboxController(1)
         self.ss_general_motor = SS_GeneralMotor()
         self.ss_encoded_motor = SS_EncodedMotor()
         self.ss_winch_servo = SS_GeneralServo(constants.PWM_CHANNELS["WINCH_SERVO"],
@@ -39,7 +40,7 @@ class RobotContainer:
         SmartDashboard.putData(constants.SWERVE_DEFAULT_NOT_GENERATED["DEFAULT_AUTONOMOUS"], self._auto_chooser)
 
 
-    def controller_bindings(self) -> None:
+    def driver_controller_bindings(self) -> None:
         # swerve drive bindings are contained in the SS_SwerveDrive class
         self.driver_joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())
         self.driver_joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2())
@@ -54,6 +55,9 @@ class RobotContainer:
         self.driver_joystick.povUp().onTrue(self.ss_encoded_motor.go_to_destination_B_command())
         self.driver_joystick.povDown().onTrue(self.ss_encoded_motor.go_to_destination_A_command())
         self.driver_joystick.povLeft().onTrue(self.ss_encoded_motor.stop_motor_command())
+
+    #def engineer_controller_bindings(self) -> None:
+
 
 
 

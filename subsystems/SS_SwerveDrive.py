@@ -16,6 +16,7 @@ class SS_SwerveDrive(commands2.SubsystemBase):
         self._joystick = driver_joystick
         self._max_angular_rate = rotationsToRadians(constants.SWERVE_DEFAULT_NOT_GENERATED["MAX_ROTATION_SPEED"]) # .75 was recommended
         self._max_speed = TunerConstants.speed_at_12_volts
+        self._slow_speed = TunerConstants.speed_at_3_volts
         self._logger = Telemetry(self._max_speed)
 
         # Initialize swerve drive configurations
@@ -46,8 +47,8 @@ class SS_SwerveDrive(commands2.SubsystemBase):
         self.drivetrain.setDefaultCommand(
             self.drivetrain.apply_request(lambda: (
                 self._drive_field_centered
-                    .with_velocity_x(-self._joystick.getLeftY() * self._max_speed)
-                    .with_velocity_y(-self._joystick.getLeftX() * self._max_speed)
+                    .with_velocity_x(-self._joystick.getLeftY() * self._slow_speed)#changed speed to slower speed
+                    .with_velocity_y(-self._joystick.getLeftX() * self._slow_speed)#changed speed to slower speed
                     .with_rotational_rate(-self._joystick.getRightX() * self._max_angular_rate)
             ))
         )
