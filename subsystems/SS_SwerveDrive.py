@@ -11,9 +11,9 @@ from commands2.sysid import SysIdRoutine
 
 
 class SS_SwerveDrive(commands2.SubsystemBase):
-    def __init__(self, joystick) -> None:
+    def __init__(self, driver_joystick) -> None:
         super().__init__()
-        self._joystick = joystick
+        self._joystick = driver_joystick
         self._max_angular_rate = rotationsToRadians(constants.SWERVE_DEFAULT_NOT_GENERATED["MAX_ROTATION_SPEED"]) # .75 was recommended
         self._max_speed = TunerConstants.speed_at_12_volts
         self._logger = Telemetry(self._max_speed)

@@ -13,14 +13,15 @@ from subsystems.SS_SwerveDrive import SS_SwerveDrive
 
 class RobotContainer:
     def __init__(self) -> None:
-        self.joystick = CommandXboxController(0)
+        # self.driver_joystick = CommandXboxController(0)
         self.initialize_subsystems()
         self.initialize_swerve_drive()
         self.controller_bindings()
 
 
     def initialize_subsystems(self) -> None:
-        self.joystick = commands2.button.CommandXboxController(0)
+        self.driver_joystick = commands2.button.CommandXboxController(0)
+        self.engineer_joystick = commands2.button.CommandXboxController(1)
         self.ss_general_motor = SS_GeneralMotor()
         self.ss_encoded_motor = SS_EncodedMotor()
         self.ss_winch_servo = SS_GeneralServo(constants.PWM_CHANNELS["WINCH_SERVO"],
@@ -33,26 +34,26 @@ class RobotContainer:
 
 
     def initialize_swerve_drive(self) -> None:
-        self.ss_swerve_drive = SS_SwerveDrive(self.joystick)
+        self.ss_swerve_drive = SS_SwerveDrive(self.driver_joystick)
         self._auto_chooser = AutoBuilder.buildAutoChooser(constants.SWERVE_DEFAULT_NOT_GENERATED["DEFAULT_AUTONOMOUS"])
         SmartDashboard.putData(constants.SWERVE_DEFAULT_NOT_GENERATED["DEFAULT_AUTONOMOUS"], self._auto_chooser)
 
 
     def controller_bindings(self) -> None:
         # swerve drive bindings are contained in the SS_SwerveDrive class
-        self.joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())
-        self.joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2())
-        # self.joystick.a().onFalse(self.ss_180_servo.run_to_min_position_command())
-        # self.joystick.b().onFalse(self.ss_180_servo.run_to_max_position_command())
-        # self.joystick.y().onFalse(self.ss_180_servo.run_to_A_position_command())
+        self.driver_joystick.x().whileTrue(self.ss_general_motor.run_forward_command2())
+        self.driver_joystick.y().whileTrue(self.ss_general_motor.run_reverse_command2())
+        # self.driver_joystick.a().onFalse(self.ss_180_servo.run_to_min_position_command())
+        # self.driver_joystick.b().onFalse(self.ss_180_servo.run_to_max_position_command())
+        # self.driver_joystick.y().onFalse(self.ss_180_servo.run_to_A_position_command())
         
-        self.joystick.rightBumper().whileTrue(self.ss_winch_servo.adjust_servo_ahead_command())
-        self.joystick.leftBumper().whileTrue(self.ss_winch_servo.adjust_servo_reverse_command())
+        self.driver_joystick.rightBumper().whileTrue(self.ss_winch_servo.adjust_servo_ahead_command())
+        self.driver_joystick.leftBumper().whileTrue(self.ss_winch_servo.adjust_servo_reverse_command())
 
-        # self.joystick.povUp().whileTrue(self.ss_encoded_motor.run_forward_command())
-        self.joystick.povUp().onTrue(self.ss_encoded_motor.go_to_destination_B_command())
-        self.joystick.povDown().onTrue(self.ss_encoded_motor.go_to_destination_A_command())
-        self.joystick.povLeft().onTrue(self.ss_encoded_motor.stop_motor_command())
+        # self.driver_joystick.povUp().whileTrue(self.ss_encoded_motor.run_forward_command())
+        self.driver_joystick.povUp().onTrue(self.ss_encoded_motor.go_to_destination_B_command())
+        self.driver_joystick.povDown().onTrue(self.ss_encoded_motor.go_to_destination_A_command())
+        self.driver_joystick.povLeft().onTrue(self.ss_encoded_motor.stop_motor_command())
 
 
 
