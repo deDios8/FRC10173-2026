@@ -22,9 +22,14 @@ class SS_GeneralServo(commands2.Subsystem):
         self.max_position = pos_max
         self.position_A = pos_A
         self.set_destination(self.position_A)
+        self.joystick = wpilib.Joystick(1)  # Initialize joystick on port 1(engineer)
 
     def periodic(self): # Special function called periodically by the robot
         wpilib.SmartDashboard.putNumber(self.dashboard_position_text, self.position)
+        speed = self.joystick.getY()  # Get the Y-axis value from the joystick
+        self.servo.set(speed)
+        direction = self.joystick.getX()  # Get the X-axis value from the joystick
+        self.servo.set(-direction)  # Set the motor speed based on joystick input
         
 
     ## Methods
