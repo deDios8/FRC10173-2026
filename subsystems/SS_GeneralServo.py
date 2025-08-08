@@ -25,10 +25,7 @@ class SS_GeneralServo(commands2.Subsystem):
 
     def periodic(self): # Special function called periodically by the robot
         wpilib.SmartDashboard.putNumber(self.dashboard_position_text, self.position)
-        speed = self.joystick.getY()  # Get the Y-axis value from the joystick
-        self.servo.set(speed)
-        direction = self.joystick.getX()  # Get the X-axis value from the joystick
-        self.servo.set(-direction)  # Set the motor speed based on joystick input
+        
         
 
     ## Methods
